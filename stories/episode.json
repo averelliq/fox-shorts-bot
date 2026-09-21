@@ -1,10 +1,10 @@
 {
   "title": "My Boss Paid Me in Exposure 🦊",
-  "description": "A fox learns what 'exposure' really pays. Original animated workplace comedy. #Shorts #Animation #Comedy",
+  "description": "An original animated fox comedy about the worst paycheck ever. Watch the Wi-Fi reveal and the rent-day twist. #Shorts #Animation #Comedy",
   "segments": [
-    {"text": "My boss said: We're paying you in exposure!", "scene": "office", "emotion": "surprised"},
-    {"text": "So I exposed his Wi-Fi password to everyone.", "scene": "office", "emotion": "smug"},
-    {"text": "Now he says I don't understand business.", "scene": "office", "emotion": "confused"},
-    {"text": "Funny. I was about to pay my rent in exposure, too.", "scene": "home", "emotion": "smug"}
+    {"text": "My boss said he'd pay me in exposure.", "scene": "office", "action": "talk", "emotion": "surprised"},
+    {"text": "So I put his Wi-Fi password on the office wall.", "scene": "wifi", "action": "show_phone", "emotion": "smug"},
+    {"text": "He said, 'You're fired!' I said, 'Great. More exposure.'", "scene": "boss", "action": "point", "emotion": "worried"},
+    {"text": "Now I'm asking my landlord if exposure covers rent.", "scene": "rent", "action": "walk", "emotion": "smug"}
   ]
 }
