@@ -1,0 +1,12 @@
+{
+  "version": 5,
+  "dimensions": [361, 151],
+  "sprites": {
+    "walk": [0, 0, 120, 151],
+    "phone": [131, 6, 98, 145],
+    "shocked": [255, 26, 90, 125]
+  },
+  "sha256": "4c388a7be6cbb1faab5c719590c528ee6fa31fa5329be1ea407fc318d757b3ae",
+  "source": "Approved Rusty expression and action pose sheet, cropped into transparent images",
+  "note": "V5 replaces the procedural fox with pre-drawn raster artwork; rigid sprite swaps cannot reproduce full frame-by-frame character acting."
+}
