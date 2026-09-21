@@ -1,13 +1,17 @@
-name: Render Fox Short
+name: Render Fox Short V2
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'scripts/**'
-      - 'stories/**'
+      - 'scripts/render_v2.py'
+      - 'stories/episode.json'
+      - 'requirements.txt'
       - '.github/workflows/render.yml'
 permissions:
   contents: read
+concurrency:
+  group: fox-render-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -17,18 +21,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install free local tools
+      - name: Install free renderer dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
           python -m pip install --disable-pip-version-check -r requirements.txt
-      - name: Render and verify
-        run: python scripts/render.py
-      - name: Download finished video from Actions
+      - name: Render V2 and verify video quality
+        run: python scripts/render_v2.py
+      - name: Save MP4 and quality-control report (not published)
         uses: actions/upload-artifact@v4
         with:
-          name: fox-short-review
+          name: fox-short-v2-review
           path: |
             output/short.mp4
             output/metadata.json
-          retention-days: 7
+          if-no-files-found: error
+          retention-days: 3
