@@ -1,12 +1,15 @@
-# Fox Shorts Bot V4 — original hand-inked cartoon 🦊
+# Fox Shorts Bot V4 — özgün çizgi film denemesi 🦊
 
-V4 replaces the simple geometric drawings with an original thick-ink-outlined fox, stable emerald costume, expressive faces, sketchbook-style locations, individually staged phone and boss interactions, camera framing changes, a landlord and visible door-slam ending. The user-supplied image is a stylistic reference, NOT an asset and not copied. This is procedural SVG animation, not a full professional hand-drawn production.
+V4 motoru `scripts/render_v4.py` dosyasına ChatGPT tarafından **doğrudan GitHub'a yüklendi**. Kullanıcının dosya yüklemesi veya bilgisayarına program kurması gerekmez. V3 dosyaları korunur.
 
-## One-time browser setup
-1. Open the `scripts` folder on GitHub and select **Add file → Upload files**.
-2. Upload the prepared `render_v4.py` file into `scripts/` and commit to `main`. Do not upload the ZIP, MP4, or artwork into the public source repository.
-3. Open **Actions → Render Fox Short V4 (Review Only) → Run workflow → Run workflow**.
-4. After success, download the `fox-short-v4-review` artifact, unzip and watch `short.mp4`. See `metadata.json` for mechanical checks.
-5. Listen to English pronunciation, check poses and continuity yourself. No automatic YouTube upload is included.
+## Tarayıcıda test videosu üret
+1. [Actions → Render Fox Short V4 (Review Only)](https://github.com/averelliq/fox-shorts-bot/actions/workflows/render-v4.yml) sayfasını aç.
+2. Gerekirse **Run workflow → Run workflow** seç. V4 kaynak kodu/senaryosu güncellenince de otomatik test çalışır.
+3. Çalışma yeşile dönünce sayfanın altındaki **fox-short-v4-review** çıktı paketini indir. ZIP içinden `short.mp4` ile `metadata.json` çıkar.
+4. İzleyerek karakter, akış, sesin İngilizcesi ve finali kontrol et. Otomatik testler sanatsal kaliteyi veya doğal oyunculuğu kanıtlamaz.
 
-V4 story is separate at `stories/episode_v4.json`; the original V3 story and workflow are unchanged. GitHub standard CPU runners have finite use/storage limits. The natural voice is generated using `edge-tts` which depends on external network access and terms; if it fails, production fails explicitly, never silently substitutes robotic audio. An optional `FOX_OFFLINE_TEST=1` mode uses eSpeak ONLY for local testing; it should never be used as release narration. No credentials are stored in source control. Technical QC does not certify artistry or virality.
+## Özellikler ve sınırlar
+
+Özgün ve referans görselin karakterlerini kopyalamayan, kalın konturlu SVG tabanlı tilki; sabit zümrüt kostüm; telefon, patron ve ev sahibi sahneleri; yakın/uzak kadrajlar; kısa altyazı parçaları; basit özgün efektler ve görünür kapı kapanışı. Bu **profesyonel kare kare elle çizilmiş animasyon değil**, CPU üzerinde üretilen stilize SVG çizgi film prototipidir. Kaynak dosyanın lokal ön izlemeden farkı, kodun okunabilir ve GitHub'da çalıştırılabilir bir V4 uyarlaması olmasıdır.
+
+İngilizce konuşma `edge-tts` üzerinden dış çevrimiçi servise bağlıdır; erişim, ücret veya ticari kullanım koşulları garanti edilmez. Servis başarısız olursa üretim hata verir; gizlice robotik sese dönmez. `FOX_OFFLINE_TEST=1` yalnızca çevrimdışı teknik denemeler içindir ve yayın sesi değildir. Standart GitHub işleyicilerinin kullanım/depolama sınırları bulunur. **YouTube'a otomatik yükleme bulunmaz.** Hiçbir hesap şifresini veya OAuth anahtarını herkese açık depoya koyma.
