@@ -1,0 +1,34 @@
+name: Render Fox Short
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'stories/**'
+      - '.github/workflows/render.yml'
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free local tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
+          python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Render and verify
+        run: python scripts/render.py
+      - name: Download finished video from Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: fox-short-review
+          path: |
+            output/short.mp4
+            output/metadata.json
+          retention-days: 7
