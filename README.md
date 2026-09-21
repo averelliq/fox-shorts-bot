@@ -1,26 +1,23 @@
-# Fox Shorts Bot V2 — free review-first prototype 🦊
+# Fox Shorts Bot V3 🦊
 
-This repository creates **original, directed 2D cartoon Shorts** on GitHub's standard Ubuntu runner. It is not the same as a paid AI video generator, and it does **not** publish to YouTube automatically. The fox is procedurally drawn consistently across four distinct story beats: office paycheck, exposed Wi-Fi notice and phone, angry boss, and rent-day twist. Arms, head, tail, legs and mouth move independently. Final MP4 is 1080×1920 with English narration and embedded captions.
+A free **review-first 2D animation prototype**, running on standard GitHub Actions Ubuntu runners. It draws the same fox across four directed beats, adds a teal vest/badge, phone interaction, boss/landlord reactions, small camera pushes, 2–3-word caption groups and original synthesized notification/reaction tones. English narration is produced with `edge-tts`. The finished MP4 is checked for 1080×1920 dimensions, audio, duration and scene frame changes.
 
-## Run in your browser (no local install)
-1. Open **Actions → Render Fox Short V2 → Run workflow**. Editing `stories/episode.json` also triggers a new run.
-2. Open the finished run and download the **fox-short-v2-review** artifact. It contains `short.mp4` and `metadata.json`.
-3. **Watch the video and listen to the voice yourself**. Automated checks catch resolution, duration, an audio stream, minimum scene count and measurable frame changes; they do not certify artistic quality, pronunciation or YouTube performance.
-4. After approval, upload `short.mp4` through [YouTube Studio](https://studio.youtube.com/). Nothing in this repo uploads a video automatically.
+**This is still procedural 2D cartoon artwork, not studio character animation or generative text-to-video.** Caption timing uses estimated word positions within each spoken sentence, not true forced alignment. The cartoon's acting, pronunciation, comedy, and music/SFX balance require human inspection. SFX are synthesized tones, not realistic recorded Foley.
 
-## Voice / cost / reliability
-The default voice is `en-US-GuyNeural` via the free community Python package `edge-tts`. It contacts an external online speech service without an API key. **That service is not guaranteed to stay free, available or suitable for every commercial use; check its applicable terms yourself.** If access fails, the workflow fails explicitly: there is no silent robotic eSpeak fallback. A fully offline permissively licensed neural voice is a separate, not-yet-implemented improvement.
+## Browser-only use
+1. Open **Actions → Render Fox Short V3 → Run workflow** (editing `stories/episode.json` also triggers rendering).
+2. Open the successful run, download **fox-short-v3-review**, and extract `short.mp4` and `metadata.json`.
+3. Watch and listen to the entire MP4; do not interpret automated QC as creative approval.
+4. There is **no automatic YouTube publishing** or Google OAuth in this repo. After your approval, manually upload through YouTube Studio if desired.
 
-The workflow uses a **standard public-repository GitHub-hosted runner**, not a paid larger runner, GPU or API. GitHub Actions still has abuse limits, concurrent job limits and artifact storage/retention limits. Artifact retention is 3 days. Do not publish account keys, OAuth credentials or private media in this public repository.
+## Architecture and constraints
+- `scripts/render_v2.py`: original tested drawing/voice/encoding engine.
+- `scripts/render_v3.py`: overlays consistent costume, props, moving captions, shot variants and original sound cues.
+- `scripts/run_v3.py`: compatibility entrypoint for V2's dynamically looked-up frame function; **run this file** rather than invoking `render_v3.py` directly.
+- `stories/episode.json`: original English dialogue and staging for four scenes.
+- `.github/workflows/render.yml`: preview-only workflow with 3-day artifacts and concurrency cancellation.
 
-## Files
-- `scripts/render_v2.py`: V2 character motion, scene drawing, neural TTS, FFmpeg encoding and technical checks.
-- `stories/episode.json`: English story/title/description and per-beat stage directions.
-- `.github/workflows/render.yml`: browser-triggered cloud rendering and review artifact.
-- `scripts/render.py`: older V1 reference, **not** used by the current workflow.
+On Ubuntu, install `ffmpeg` and `fonts-dejavu-core`; then `python -m pip install -r requirements.txt && python scripts/run_v3.py`. English speech requires the external `edge-tts` service (no API key), whose free availability and commercial-use suitability are **not guaranteed**; assess applicable terms before monetization. No paid API, private credential, YouTube upload or large/GPU runner is configured. Standard GitHub limits and artifact storage limits still apply.
 
-## Optional local execution
-On Ubuntu install `ffmpeg` and `fonts-dejavu-core`, then run `python -m pip install -r requirements.txt && python scripts/render_v2.py` (requires internet access for speech). Check `output/short.mp4` and `output/metadata.json`.
-
-## Not implemented
-Automatically generated fresh story concepts, truly studio-level character rigging, offline neural voice, YouTube OAuth setup, automatic upload, thumbnail generation and subjective video assessment. These are future work, not V2 features. Do not claim this generator makes AI content undetectable or guarantees distribution.
+## Still not implemented
+Truly sophisticated skeletal animation, voice pronunciation/acting evaluated by human hearing, accurate forced-aligned word subtitles, fully autonomous original story generation, OAuth-based YouTube uploads, thumbnails or a verified royalty-free recorded Foley library. Do not promise undetectable AI or YouTube reach.
