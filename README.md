@@ -1,23 +1,11 @@
-# Fox Shorts Bot V3 🦊
+# Fox Shorts Bot — Rusty V5 🦊
 
-A free **review-first 2D animation prototype**, running on standard GitHub Actions Ubuntu runners. It draws the same fox across four directed beats, adds a teal vest/badge, phone interaction, boss/landlord reactions, small camera pushes, 2–3-word caption groups and original synthesized notification/reaction tones. English narration is produced with `edge-tts`. The finished MP4 is checked for 1080×1920 dimensions, audio, duration and scene frame changes.
+The current **V5 proof** uses the original Rusty character drawings approved by the user, rather than drawing the fox from procedural SVG shapes as earlier versions did. It prepares a 3–5 second 1080×1920 review MP4 with three distinct artwork-based poses, English narration and subtitles. **It does not upload to YouTube.** This is an acting/visual-style proof, not a finished Shorts episode or studio-quality frame-by-frame animation.
 
-**This is still procedural 2D cartoon artwork, not studio character animation or generative text-to-video.** Caption timing uses estimated word positions within each spoken sentence, not true forced alignment. The cartoon's acting, pronunciation, comedy, and music/SFX balance require human inspection. SFX are synthesized tones, not realistic recorded Foley.
+**[V5 documentation and limitations](V5_README.md)** · [V5 sprite engine](scripts/render_v5.py) · [V5 GitHub Actions](../../actions/workflows/render-v5.yml)
 
-## Browser-only use
-1. Open **Actions → Render Fox Short V3 → Run workflow** (editing `stories/episode.json` also triggers rendering).
-2. Open the successful run, download **fox-short-v3-review**, and extract `short.mp4` and `metadata.json`.
-3. Watch and listen to the entire MP4; do not interpret automated QC as creative approval.
-4. There is **no automatic YouTube publishing** or Google OAuth in this repo. After your approval, manually upload through YouTube Studio if desired.
+In your browser go to **Actions → Render Rusty V5 Sprite Proof (Review Only) → Run workflow**. When the run succeeds, download the `rusty-v5-sprite-proof` artifact. It contains `short_v5_proof.mp4` and `metadata_v5.json`. Artifacts expire in three days.
 
-## Architecture and constraints
-- `scripts/render_v2.py`: original tested drawing/voice/encoding engine.
-- `scripts/render_v3.py`: overlays consistent costume, props, moving captions, shot variants and original sound cues.
-- `scripts/run_v3.py`: compatibility entrypoint for V2's dynamically looked-up frame function; **run this file** rather than invoking `render_v3.py` directly.
-- `stories/episode.json`: original English dialogue and staging for four scenes.
-- `.github/workflows/render.yml`: preview-only workflow with 3-day artifacts and concurrency cancellation.
+V1–V4 source and workflows are retained for reference. The old [V4 documentation](V4_README.md) applies only to V4. The new atlas is reconstructed from four small text chunks in `assets/` and SHA-256 validated before rendering. Automated tests verify basic technical conditions, not artistic quality, naturalness of the English voice or popularity.
 
-On Ubuntu, install `ffmpeg` and `fonts-dejavu-core`; then `python -m pip install -r requirements.txt && python scripts/run_v3.py`. English speech requires the external `edge-tts` service (no API key), whose free availability and commercial-use suitability are **not guaranteed**; assess applicable terms before monetization. No paid API, private credential, YouTube upload or large/GPU runner is configured. Standard GitHub limits and artifact storage limits still apply.
-
-## Still not implemented
-Truly sophisticated skeletal animation, voice pronunciation/acting evaluated by human hearing, accurate forced-aligned word subtitles, fully autonomous original story generation, OAuth-based YouTube uploads, thumbnails or a verified royalty-free recorded Foley library. Do not promise undetectable AI or YouTube reach.
+Costs: standard GitHub runner plus free software; the online voice service may have availability/terms restrictions. Public repositories must not contain private account credentials or unlicensed media. **Publishing remains manual and requires review/approval.**
