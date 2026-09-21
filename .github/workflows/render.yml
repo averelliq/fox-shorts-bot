@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'scripts/render_v2.py'
+      - 'scripts/render_v2_reviewed.py'
       - 'stories/episode.json'
       - 'requirements.txt'
       - '.github/workflows/render.yml'
@@ -26,8 +27,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg fonts-dejavu-core
           python -m pip install --disable-pip-version-check -r requirements.txt
-      - name: Render V2 and verify video quality
-        run: python scripts/render_v2.py
+      - name: Render V2 with trimmed neural voice and verify video
+        run: python scripts/render_v2_reviewed.py
       - name: Save MP4 and quality-control report (not published)
         uses: actions/upload-artifact@v4
         with:
