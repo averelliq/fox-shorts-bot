@@ -1,0 +1,33 @@
+name: Render Rusty V6 (Review Only)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/render-v6.yml'
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free rendering and narration dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg espeak fonts-dejavu-core
+          python -m pip install --disable-pip-version-check 'Pillow==12.3.0' 'edge-tts>=7,<9'
+      - name: Render original Rusty sprite and background review proof
+        run: python scripts/render_v6.py
+      - name: Upload review-only video (NEVER publish to YouTube)
+        uses: actions/upload-artifact@v4
+        with:
+          name: rusty-v6-review
+          path: |
+            output/short_v6_proof.mp4
+            output/metadata_v6.json
+          if-no-files-found: error
+          retention-days: 3
