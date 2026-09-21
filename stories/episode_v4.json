@@ -1,0 +1,13 @@
+{
+  "title": "My Boss Paid Me in Exposure 🦊",
+  "description": "A fox gets paid in 'exposure'... and takes it literally. Original hand-drawn-inspired cartoon comedy. #Shorts #Animation #Comedy",
+  "segments": [
+    {"scene":"offer", "speaker":"boss", "text":"We'll pay you in exposure.", "action":"shock", "shot":"two-shot"},
+    {"scene":"idea", "speaker":"fox", "text":"Oh! I'll expose your Wi-Fi password.", "action":"phone", "shot":"close-up"},
+    {"scene":"wifi", "speaker":"fox", "text":"Free Wi-Fi for everyone!", "action":"point", "shot":"wide"},
+    {"scene":"fired", "speaker":"boss", "text":"You're fired!", "action":"shock", "shot":"reaction"},
+    {"scene":"retort", "speaker":"fox", "text":"Great. More exposure!", "action":"grin", "shot":"close-up"},
+    {"scene":"rent", "speaker":"landlord", "text":"Rent's due!", "action":"plead", "shot":"two-shot"},
+    {"scene":"door", "speaker":"fox", "text":"Can I pay in exposure?", "action":"plead", "shot":"reaction"}
+  ]
+}
