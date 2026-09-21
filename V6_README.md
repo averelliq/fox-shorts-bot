@@ -1,0 +1,10 @@
+# Rusty V6 — background and sprite-scale proof 🦊
+
+The `scripts/render_v6.py` renderer uses the **already approved Rusty artwork**, reconstructing the V5 sprite atlas from `assets/v5_atlas_part_*.txt` and verifying its SHA-256 against `assets/rusty_atlas.json`. It does not use the old geometric fox renderer. V3–V5 remain intact.
+
+Changes in this proof: illustrated office/doorway scenes with extra set dressing and depth cues; controlled Rusty sprite enlargement (maximum 2.28× at the 540×960 internal resolution); Lanczos filtering, smooth prop/character positions and visible reaction/phone/Wi-Fi/exit beats; tighter caption placement; video encoded at 1080×1920 with sound. The workflow uploads the result for review only: it has NO YouTube upload step or credentials.
+
+**Important limits:** The source atlas is only **361×151 pixels for three poses**. Lanczos and a smaller character on screen cannot restore detail already missing from the source. Cropping artifacts and some pixelation can remain. There is still **no independently animated arm, mouth, telephone extraction, or real walking cycle**; the single walking drawing slides in the last beat. The two background scenes are programmatically illustrated, not custom hand-painted art. Mechanical video QC is not artistic approval. For the original hand-drawn quality target, we need separate clean high-resolution transparent sprites/rigged parts or hand-drawn motion frames.
+
+## Run in browser
+Go to **Actions → Render Rusty V6 (Review Only) → Run workflow**. After a green run download `rusty-v6-review` from **Artifacts** and inspect `short_v6_proof.mp4` and `metadata_v6.json`. Standard GitHub runners have limits; TTS uses `edge-tts` over the network, and an outage fails the job rather than silently replacing the narration. `FOX_OFFLINE_TEST=1` runs eSpeak for technical local tests only. Nothing in the workflow publishes to YouTube.
