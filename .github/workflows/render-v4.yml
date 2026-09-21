@@ -1,0 +1,30 @@
+name: Render Fox Short V4 (Review Only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free animation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core libcairo2 libffi-dev
+          python -m pip install --disable-pip-version-check Pillow==12.3.0 "CairoSVG>=2.7,<3" "edge-tts>=7.0,<9.0" "numpy>=1.26,<3"
+      - name: Render original V4 hand-drawn-inspired cartoon
+        run: python scripts/render_v4.py
+      - name: Deliver video for human review (never YouTube)
+        uses: actions/upload-artifact@v4
+        with:
+          name: fox-short-v4-review
+          path: |
+            output/short.mp4
+            output/metadata.json
+          if-no-files-found: error
+          retention-days: 3
