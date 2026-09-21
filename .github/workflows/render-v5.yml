@@ -1,0 +1,42 @@
+name: Render Rusty V5 Sprite Proof (Review Only)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/render_v5.py'
+      - 'stories/proof_v5.json'
+      - 'assets/v5_atlas_part_*.txt'
+      - 'assets/rusty_atlas.json'
+      - '.github/workflows/render-v5.yml'
+permissions:
+  contents: read
+concurrency:
+  group: rusty-v5-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free preview dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install --disable-pip-version-check 'Pillow>=11,<13' 'edge-tts>=7,<9'
+      - name: Verify sprite renderer and make review-only proof
+        run: |
+          python -m py_compile scripts/render_v5.py
+          python scripts/render_v5.py
+      - name: Upload MP4 and technical checks (never YouTube)
+        uses: actions/upload-artifact@v4
+        with:
+          name: rusty-v5-sprite-proof
+          path: |
+            output/short_v5_proof.mp4
+            output/metadata_v5.json
+          if-no-files-found: error
+          retention-days: 3
