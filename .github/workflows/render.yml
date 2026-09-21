@@ -1,17 +1,18 @@
-name: Render Fox Short V2
+name: Render Fox Short V3
 on:
   workflow_dispatch:
   push:
     paths:
       - 'scripts/render_v2.py'
-      - 'scripts/render_v2_reviewed.py'
+      - 'scripts/render_v3.py'
+      - 'scripts/run_v3.py'
       - 'stories/episode.json'
       - 'requirements.txt'
       - '.github/workflows/render.yml'
 permissions:
   contents: read
 concurrency:
-  group: fox-render-${{ github.ref }}
+  group: fox-v3-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   render:
@@ -22,17 +23,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install free renderer dependencies
+      - name: Install free animation and voice dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg fonts-dejavu-core
           python -m pip install --disable-pip-version-check -r requirements.txt
-      - name: Render V2 with trimmed neural voice and verify video
-        run: python scripts/render_v2_reviewed.py
-      - name: Save MP4 and quality-control report (not published)
+      - name: Produce V3 preview and run automated technical checks
+        run: python scripts/run_v3.py
+      - name: Save review-only video and quality report
         uses: actions/upload-artifact@v4
         with:
-          name: fox-short-v2-review
+          name: fox-short-v3-review
           path: |
             output/short.mp4
             output/metadata.json
