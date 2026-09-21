@@ -1,8 +1,16 @@
 name: Render Fox Short V4 (Review Only)
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/render_v4.py'
+      - 'stories/episode_v4.json'
+      - '.github/workflows/render-v4.yml'
 permissions:
   contents: read
+concurrency:
+  group: fox-v4-review-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -17,7 +25,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg fonts-dejavu-core libcairo2 libffi-dev
           python -m pip install --disable-pip-version-check Pillow==12.3.0 "CairoSVG>=2.7,<3" "edge-tts>=7.0,<9.0" "numpy>=1.26,<3"
-      - name: Render original V4 hand-drawn-inspired cartoon
+      - name: Validate source syntax
+        run: python -m py_compile scripts/render_v4.py
+      - name: Render original V4 hand-inked-inspired cartoon
         run: python scripts/render_v4.py
       - name: Deliver video for human review (never YouTube)
         uses: actions/upload-artifact@v4
