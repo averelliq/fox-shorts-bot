@@ -1,0 +1,10 @@
+{
+  "title": "My Boss Paid Me in Exposure 🦊",
+  "description": "A fox learns what 'exposure' really pays. Original animated workplace comedy. #Shorts #Animation #Comedy",
+  "segments": [
+    {"text": "My boss said: We're paying you in exposure!", "scene": "office", "emotion": "surprised"},
+    {"text": "So I exposed his Wi-Fi password to everyone.", "scene": "office", "emotion": "smug"},
+    {"text": "Now he says I don't understand business.", "scene": "office", "emotion": "confused"},
+    {"text": "Funny. I was about to pay my rent in exposure, too.", "scene": "home", "emotion": "smug"}
+  ]
+}
