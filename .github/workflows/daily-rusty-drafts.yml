@@ -1,0 +1,55 @@
+name: Rusty Daily Drafts — Review Only
+
+on:
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: 'Which TRT draft slot?'
+        type: choice
+        options: [auto, morning, evening]
+        default: auto
+      offline_test:
+        description: 'Use robotic eSpeak ONLY for a technical smoke test'
+        type: boolean
+        default: false
+  schedule:
+    # 09:17 and 19:17 in Turkey (UTC+3); GitHub schedules may be delayed.
+    - cron: '17 6,16 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rusty-draft-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  review-draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      RUSTY_SLOT: ${{ inputs.slot || 'auto' }}
+      FOX_OFFLINE_TEST: ${{ inputs.offline_test && '1' || '0' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free rendering tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pillow edge-tts
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg espeak fonts-dejavu-core
+      - name: Render one draft for this time slot
+        run: python scripts/daily_draft.py
+      - name: Upload video and review report — never upload to YouTube
+        uses: actions/upload-artifact@v4
+        with:
+          name: rusty-review-${{ github.run_id }}
+          path: output/daily/**
+          if-no-files-found: error
+          retention-days: 3
