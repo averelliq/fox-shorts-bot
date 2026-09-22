@@ -1,0 +1,59 @@
+name: Rusty Daily Draft Pipeline — Offline Smoke Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/daily-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      FOX_OFFLINE_TEST: '1'
+      GEMINI_API_KEY: ''
+      CLOUDFLARE_ACCOUNT_ID: ''
+      CLOUDFLARE_API_TOKEN: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install only free offline test dependencies
+        run: |
+          pip install pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg espeak fonts-dejavu-core
+      - name: Syntax check and render two different review drafts
+        run: |
+          python -m py_compile scripts/daily_draft.py
+          RUSTY_SLOT=morning python scripts/daily_draft.py
+          RUSTY_SLOT=evening python scripts/daily_draft.py
+      - name: Validate two dated MP4 and JSON pairs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          folders = sorted(Path('output/daily').glob('*'))
+          assert len(folders) == 2, folders
+          scripts = []
+          for folder in folders:
+              assert (folder/'rusty_review.mp4').stat().st_size > 1000
+              report = json.loads((folder/'review.json').read_text())
+              assert report['technical_qc'] == 'passed'
+              assert report['youtube_uploaded'] is False
+              scripts.append(report['voiceover_lines'])
+          assert scripts[0] != scripts[1]
+          print('PASS: two distinct review-only MP4s with validated technical metadata; robotic test audio')
+          PY
+      - name: Upload two test drafts, never publish
+        uses: actions/upload-artifact@v4
+        with:
+          name: rusty-two-slot-offline-smoke-${{ github.run_id }}
+          path: output/daily/**
+          retention-days: 3
+          if-no-files-found: error
