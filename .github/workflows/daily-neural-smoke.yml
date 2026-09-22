@@ -1,0 +1,51 @@
+name: Rusty Daily Draft — Neural Voice Integration Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/daily-neural-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  neural-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      RUSTY_SLOT: evening
+      FOX_OFFLINE_TEST: '0'
+      GEMINI_API_KEY: ''
+      CLOUDFLARE_ACCOUNT_ID: ''
+      CLOUDFLARE_API_TOKEN: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free video and narration dependencies
+        run: |
+          pip install pillow edge-tts
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+      - name: Render a normal-voice review draft
+        run: python scripts/daily_draft.py
+      - name: Check actual voice source and review-only status
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(next(Path('output/daily').glob('*/review.json')).read_text())
+          assert report['voice_engine'] == 'edge-tts', report
+          assert report['youtube_uploaded'] is False
+          assert report['technical_qc'] == 'passed'
+          print('PASS: normal edge-tts video plus review-only technical QC')
+          PY
+      - name: Upload natural-voice MP4 for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: rusty-neural-review-${{ github.run_id }}
+          path: output/daily/**
+          if-no-files-found: error
+          retention-days: 3
